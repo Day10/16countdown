@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Page Title</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+</head>
+<body>
+  <!-- 闭包单例 -->
+  <button id="loginBtn">open</button>
+  <!-- debounce -->
+  <input id="debounceInput" onclick=""/>
+  <!-- throttle -->
+  <button id="throttleBtn" onclick="">普攻</button>
+  <script>
+    // 闭包单例
+    function generateModal (arguments) {
+      var modal = document.createElement('div');
+      var text = document.createTextNode(arguments)
+      modal.appendChild(text)
+      modal.style.display = 'none'
+      document.body.appendChild(modal)
+      return modal
+    }
+
+    function getSingel (fn) {
+      var result;
+      return function () {
+        return result || (result = fn.apply(this, arguments));
+      }
+    }
+
+    const getModal =  getSingel(generateModal);
+    document.getElementById('loginBtn').addEventListener('click', function() {
+       var modal = getModal(123123);
+       modal.style.display = 'block'
+    })
+    // debounced
+    function debounce(delay, cb) {
+      var timer;
+      return function (value) {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+          cb(value)
+        }, delay);
+      }
+    }
+
+    function cb (value) {
+      console.log(value)
+    }
+
+    var debounceInput = debounce(1000, cb)
+    document.getElementById('debounceInput').addEventListener('keyup', function(e) {
+      debounceInput(e.target.value)
+    })
+
+    // throttle
+
+    function throttle(delay, cb) {
+      var timer;
+      return function() {
+        if (!timer) {
+          timer =  setTimeout(() => {
+            cb()
+            timer = null
+          }, delay);
+        }
+      }
+    }
+
+    function cb2 () {
+      console.log('攻击')
+    }
+
+    document.getElementById('throttleBtn').onclick = throttle(1000, cb2)
+    // call
+    person = {
+      getName: function() {
+        console.log(this.name)
+      }
+    }
+    person2 = {
+      name: 'person2 name'
+    }
+
+    Function.prototype.myCall = function(context) {
+      // 判断调用此方法的是个函数
+      if (typeof this !== 'function') {
+        throw new Error('this is not a function')
+      }
+      // context的值
+      context = context || window
+
+      // arguments
+      const args = [...arguments].slice(1)
+      console.log(args) // [2, 3, 4, 5, 5]
+
+      console.log(this, context, args)
+      // 调用
+
+      // private method
+      const key = Symbol()
+      context[key] = this;
+      var result = context[key](...args)
+    }
+
+    person.getName.myCall(person2, 2,3,4,5,5,)
+
+
+
+    // apply
+  </script>
+
+</body>
+</html>
