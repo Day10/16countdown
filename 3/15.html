@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function Person () {
+      this.name = ["jodan"]
+      // this.name = "jodan"
+    }
+    Person.prototype.getName = function() {
+      console.log(this.name)
+    }
+    function Children() {}
+
+    Children.prototype = new Person()
+
+    var child1 = new Children()
+    child1.getName()
+
+    var child2 = new Children()
+    child2.name[0] = 'kobi'
+    child1.getName() // kobi 这里只有修改引用类型的时候，会改变；如果是基础类型，则不改变
+    child2.getName() // kobi
+
+    // 构造函数继承
+    // 在子类的构造函数中，执行父类的狗找函数，并且为其绑定子类的this
+  </script>
+</body>
+</html>
