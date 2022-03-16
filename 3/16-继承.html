@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 原型链
+    function Animal() {
+      this.species = 'animal'
+    }
+
+    function Cat(name,color) {
+      this.name = name;
+　　　　this.color = color;
+    }
+
+    console.log(Cat.prototype) // {constructor: ƒ Cat(name,color) }
+
+    Cat.prototype = new Animal()
+    console.log(Cat.prototype) // {species: 'animal'}
+
+
+    // Cat.prototype.constructor = Cat
+    console.log(Cat.prototype) // {species: 'animal',constructor: ƒ Animal()}
+    console.log(Cat.prototype.constructor == Animal)
+
+    var cat1 = new Cat('煎饼', '黄色');
+    // 如果注释Cat.prototype.constructor = Cat，
+    // cat1的构造函数就变成了Animal，但是他是new Cat 产生的，他的构造函数应该是Cat
+    console.log(cat1.constructor) //Animal
+
+    Cat.prototype.constructor = Cat
+    var cat2 = new Cat('淅沥', '花色');
+    // Cat.prototype.constructor = Cat的作用应该是避免继承链紊乱
+    // 并且，如果！！！！！！ 替换了prototype对象，下一步一定是纠正constructor的指向
+
+    console.log(cat1.constructor) // Cat
+
+
+    // 构造函数
+    function Person() {
+      this.species = 'human'
+    }
+
+    function Lawyer(name){
+      Person.call(this)
+　　　　this.name = name;
+　　}
+
+    var mike = new Lawyer('mike')
+    console.log(mike.species)
+
+    // class test
+    class A {
+      constructor() {
+        this.a = '111'
+      }
+    }
+
+    class B extends A{
+      // 默认返回实例对象this
+      constructor(name) {
+        super()
+        this.name = name
+      }
+
+      toString() {
+        console.log(1234567890)
+      }
+    }
+
+    var b = new B('222')
+    var b1 = new B('222')
+
+    console.log(b.name) // 222
+    console.log(b.a) // 111
+
+    console.log(b.constructor) // B
+    console.log(B.prototype) // {constructor: class B, toString: f toString()} // 类的方法放在prototype上
+    b.toString() // 1234567890
+
+    console.log(b.constructor === B.prototype.constructor) // true
+    console.log(b.constructor === B) // true
+    console.log(b.constructor === b1.constructor) //true
+
+
+
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+
+    // conclusion
+    // 对象，没有prototype，他的constructor指向Object对象
+    // 实例，没有prototype，他的constructor指向new 的那个函数
+    // 对象和实例就是普通的对象，只不过一个是由Object对象产生的，一个由new 函数产生的
+    // 一个函数初始化时，他的prototype.constructor就是他自己
+
+
+
+
+    function Cat(name, color) {
+      this.name = name
+      this.color = color
+      this.eat = function() {
+        console.log(`${this.name} eat a lot`)
+      }
+    }
+
+    Cat.prototype.eatTogether = function() {
+      console.log(`${this.name} eat together`)
+    }
+
+    var cat1 = new Cat('煎饼', '黄色');
+    var cat2 = new Cat('淅沥', '花色');
+
+    console.log(cat1.eat(), cat2.eat())
+    console.log(cat1.eatTogether(), cat2.eatTogether())
+
+
+    console.log(Cat.prototype.isPrototypeOf(cat1)); // true
+    console.log(Cat.isPrototypeOf(cat1)); // false
+
+
+    console.log(cat1.constructor === cat2.constructor) // Cat
+    console.log(cat1.eat === cat2.eat) // false
+    console.log(cat1.eatTogether === cat2.eatTogether) // true
+
+
+    console.log(Cat.prototype) // {eatTogether: ƒ, constructor: ƒ}
+    // 一个函数初始化时，他的prototype.constructor就是他自己
+
+    console.log(cat1.prototype) // undefined
+    console.log(cat1.constructor) // Cat
+
+    // 一个普通的对象，没有prototype，他的constructor指向Object对象
+    var obj = {}
+    console.log(obj.constructor) // ƒ Object() { [native code] }
+    console.log(obj.prototype) //undefined
+
+
+
+
+
+
+  </script>
+</body>
+</html>
